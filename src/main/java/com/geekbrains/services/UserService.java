@@ -5,14 +5,13 @@ import com.geekbrains.controllers.dto.UserType;
 import com.geekbrains.entities.Role;
 import com.geekbrains.entities.User;
 import com.geekbrains.exceptions.ManagerIsEarlierThanNeedException;
+import com.geekbrains.exceptions.NotFoundException;
 import com.geekbrains.exceptions.UnknownUserTypeException;
-import com.geekbrains.repositories.RoleRepository;
 import com.geekbrains.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -71,6 +70,25 @@ public class UserService {
     }
 
     public List<User> getAllUsersWithType(UserType userType) {
-        return userRepository.findAll();
+        Role role;
+        if (UserType.USER == userType) {
+            role = roleService.getByName("ROLE_USER");
+            return userRepository.findAllByRoles(role);
+        } else if (UserType.MANAGER == userType) {
+            role = roleService.getByName("ROLE_MANAGER");
+            return userRepository.findAllByRoles(role);
+        } else {
+            return userRepository.findAll();
+        }
+    }
+
+    public Optional<User> getUserById(Long id) {
+        Optional<User> roleOptional = userRepository.findById(id);
+        if(roleOptional.isPresent()) {
+            return userRepository.findById(id);
+        } else {
+            throw new NotFoundException(String.format("Пользователь с ИД №%s не найден.", id));
+        }
     }
 }
+
