@@ -1,17 +1,16 @@
 package com.geekbrains.services;
 
 import com.geekbrains.controllers.dto.UserDto;
-import com.geekbrains.controllers.dto.UserType;
+import com.geekbrains.controllers.dto.RoleDto;
 import com.geekbrains.entities.Role;
 import com.geekbrains.entities.User;
 import com.geekbrains.exceptions.ManagerIsEarlierThanNeedException;
-import com.geekbrains.exceptions.NotFoundException;
 import com.geekbrains.exceptions.UnknownUserTypeException;
+import com.geekbrains.exceptions.UserNotFoundException;
 import com.geekbrains.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -26,9 +25,9 @@ public class UserService {
     }
 
     public User saveUser(UserDto userDto) {
-        if (userDto.getUserType().equals(UserType.MANAGER)) {
+        if (userDto.getRoleDto().equals(RoleDto.MANAGER)) {
             saveManager(userDto);
-        } else if (userDto.getUserType().equals(UserType.USER)) {
+        } else if (userDto.getRoleDto().equals(RoleDto.CUSTOMER)) {
             saveTypicallyUser(userDto);
         }
 
@@ -69,26 +68,22 @@ public class UserService {
         return user;
     }
 
-    public List<User> getAllUsersWithType(UserType userType) {
+    public List<User> getAllUsersWithType(RoleDto roleDto) {
         Role role;
-        if (UserType.USER == userType) {
-            role = roleService.getByName("ROLE_USER");
+
+        if (roleDto == RoleDto.CUSTOMER) {
+            role = roleService.getByName("ROLE_CUSTOMER");
             return userRepository.findAllByRoles(role);
-        } else if (UserType.MANAGER == userType) {
+        } else if (roleDto == RoleDto.MANAGER) {
             role = roleService.getByName("ROLE_MANAGER");
             return userRepository.findAllByRoles(role);
-        } else {
-            return userRepository.findAll();
         }
+
+        return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(Long id) {
-        Optional<User> roleOptional = userRepository.findById(id);
-        if(roleOptional.isPresent()) {
-            return userRepository.findById(id);
-        } else {
-            throw new NotFoundException(String.format("Пользователь с ИД №%s не найден.", id));
-        }
+    public User findById(long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(String.format("Пользователь с идентификатором %s не найден", id)));
     }
 }
-
