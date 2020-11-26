@@ -1,18 +1,16 @@
 package com.geekbrains.controllers;
 
 import com.geekbrains.controllers.dto.UserDto;
-import com.geekbrains.controllers.dto.UserType;
+import com.geekbrains.controllers.dto.RoleDto;
 import com.geekbrains.entities.User;
 import com.geekbrains.services.UserService;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("api/v1/user")
 public class UserController {
 
     public final UserService userService;
@@ -27,12 +25,8 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(@RequestParam(value = "type", required = false) UserType type) {
+    public List<User> getAllUsers(@RequestParam(value = "type", required = false) RoleDto type) {
         return userService.getAllUsersWithType(type);
     }
 
-    @GetMapping(value = "/{id}")
-    public Optional<User> getUser(@PathVariable(value = "id") Long id) {
-        return userService.getUserById(id);
-    }
 }

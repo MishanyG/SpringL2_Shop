@@ -13,8 +13,6 @@ public class Application {
 }
 
 // TODO:
-// 1. Отношение цены к товару. ManyToMany? Json?
-//2. Добавить обработку NotFoundException в ExceptionHandlerImpl
-//3. Добавить в com.geekbrains.services.UserService.getAllUsersWithType обработку которая маппит UserType в Role.
-//Например: UserType.MANAGER = ROLE_MANAGER
-//4. Добавить метод в UserRepository, который ищет по роли.
+// 1. Сделать проверку, чтобы количество продуктов, не могло уйти в отрицательное значение в корзине
+// 2. Проверка, что в поле номер телефона, вводятся только цифры
+// 3. Зацикливание при сохранение, сохраняет слишком много продуктов. Поправить.
