@@ -64,8 +64,8 @@ public class CartService {
     }
 
     public void recalculate() {
-        price = new BigDecimal(0.0);
-        items.stream().forEach(orderItem ->
+        price = new BigDecimal(0);
+        items.forEach(orderItem ->
                 price = price.add(orderItem.getPrice())
         );
     }

@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("api/v1/order")
 public class OrderController {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+
+    public OrderController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     @GetMapping
     public List<Order> findAllOrders() {
