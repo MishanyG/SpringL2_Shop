@@ -1,5 +1,6 @@
 package com.geekbrains.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
 
@@ -16,6 +17,7 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

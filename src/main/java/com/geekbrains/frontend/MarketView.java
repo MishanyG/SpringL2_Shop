@@ -53,7 +53,7 @@ public class MarketView extends AbstractView {
 
         add(new Button("Добавить выбранные товары", e -> {
             Set<Product> productSet = productGrid.getSelectedItems();
-            productSet.stream().forEach(cartService::add);
+            productSet.forEach(cartService::add);
             Notification.show("Товар успешно добавлен в корзину");
         }));
     }
