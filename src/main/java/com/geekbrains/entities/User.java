@@ -21,8 +21,7 @@ public class User {
     private String email;
     private Integer age;
 
-    @Enumerated(EnumType.STRING)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))

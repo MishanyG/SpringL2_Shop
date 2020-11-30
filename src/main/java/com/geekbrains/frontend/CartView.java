@@ -3,6 +3,7 @@ package com.geekbrains.frontend;
 import com.geekbrains.entities.OrderItem;
 import com.geekbrains.services.CartService;
 import com.geekbrains.services.OrderService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
@@ -58,6 +59,8 @@ public class CartView extends AbstractView {
             if (phoneField.getValue().matches("\\d{11}")) {
                 cartService.setPhone(phoneField.getValue());
                 orderService.saveOrder();
+                cartService.clear();
+                UI.getCurrent().navigate("market");
                 Notification.show("Заказ успешно сохранён и передан менеджеру");
             } else {
                 Notification.show("Номер телефона должен содержать только цыфры!");

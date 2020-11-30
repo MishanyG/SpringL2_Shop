@@ -1,13 +1,12 @@
 package com.geekbrains.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name =  "orders_items")
+@Table(name =  "items")
 @Data
 public class OrderItem {
     @Id
@@ -15,17 +14,11 @@ public class OrderItem {
     @Column(name = "id")
     private Long id;
 
-    @JsonIgnore
     @ManyToOne
     private Product product;
 
     private BigDecimal price;
     private int quantity;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
 
     public OrderItem() {}
 
