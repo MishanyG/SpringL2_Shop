@@ -34,7 +34,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/topic", {}, JSON.stringify({'name': $("#name").val()}))
+    stompClient.send("/sendMessage", {}, JSON.stringify({'name': $("#name").val(), 'message': $("#message").val()}));
 }
 
 function showGreetings(message) {
@@ -49,4 +49,4 @@ $(function () {
     $("#connect").click(function () { connect() });
     $("#disconnect").click(function () { disconnect() });
     $("#send").click(function () { sendName() });
-})
+});
