@@ -23,4 +23,7 @@
       <module name="websocket-example" options="-parameters" />
     </option>
   </component>
+  <component name="TypeScriptCompiler">
+    <option name="nodeInterpreterTextField" value="$USER_HOME$/.vaadin/node/node" />
+  </component>
 </project>

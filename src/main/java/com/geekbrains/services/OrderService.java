@@ -38,7 +38,7 @@ public class OrderService {
         order.setItems(cartService.getItems());
         order.setAddress(cartService.getAddress());
         order.setPhoneNumber(cartService.getPhone());
-        order.setUser(userService.findById(1L));
+        order.setUser(user);
         order.setPrice(cartService.getPrice());
         order.setStatus(MANAGING);
         order.setPhoneNumber(user.getPhone());

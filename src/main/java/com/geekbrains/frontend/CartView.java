@@ -13,10 +13,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
 
-import javax.swing.*;
-import javax.swing.text.MaskFormatter;
-import java.text.ParseException;
-
 @Route("cart")
 public class CartView extends AbstractView {
 
@@ -43,10 +39,8 @@ public class CartView extends AbstractView {
             });
 
             Button minusButton = new Button("-", i -> {
-                if(item.getQuantity() > 0) {
-                    item.decrement();
-                    grid.setItems(cartService.getItems());
-                }
+                item.decrement();
+                grid.setItems(cartService.getItems());
             });
 
             return new HorizontalLayout(plusButton, minusButton);
@@ -54,17 +48,16 @@ public class CartView extends AbstractView {
 
         TextField addressField = initTextFieldWithPlaceholder("Введите адрес доставки");
         TextField phoneField = initTextFieldWithPlaceholder("Введите номер телефона");
+
         Button toOrderButton = new Button("Создать заказ", e -> {
             cartService.setAddress(addressField.getValue());
-            if (phoneField.getValue().matches("\\d{11}")) {
-                cartService.setPhone(phoneField.getValue());
-                orderService.saveOrder();
-                cartService.clear();
-                UI.getCurrent().navigate("market");
-                Notification.show("Заказ успешно сохранён и передан менеджеру");
-            } else {
-                Notification.show("Номер телефона должен содержать только цыфры!");
-            }
+            cartService.setPhone(phoneField.getValue());
+            orderService.saveOrder();
+
+            cartService.clear();
+            UI.getCurrent().navigate("market");
+
+            Notification.show("Заказ успешно сохранён и передан менеджеру");
         });
 
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
