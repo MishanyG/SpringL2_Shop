@@ -3,7 +3,6 @@ package com.geekbrains;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.UUID;
 
 @SpringBootApplication
 public class Application {
@@ -13,4 +12,4 @@ public class Application {
 }
 
 // TODO:
-// 1. Добавить Аспект на логирование метода создания заказа через аннотацию Around, скорость выполнения метода в мс
+// 1. Покрыть 30%-50% кода автотестами
