@@ -1,11 +1,15 @@
 package com.geekbrains.frontend;
 
 import com.geekbrains.entities.OrderItem;
+import com.geekbrains.entities.User;
+import com.geekbrains.security.SecurityUtils;
 import com.geekbrains.services.CartService;
 import com.geekbrains.services.OrderService;
+import com.geekbrains.services.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,23 +17,27 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.Route;
 
+import java.math.BigDecimal;
+
 @Route("cart")
 public class CartView extends AbstractView {
 
     private final CartService cartService;
     private final OrderService orderService;
+    private final UserService userService;
 
     public CartView(CartService cartService,
-                    OrderService orderService) {
+                    OrderService orderService,
+                    UserService userService) {
         this.cartService = cartService;
         this.orderService = orderService;
+        this.userService = userService;
         initCartPage();
     }
 
     private void initCartPage() {
         Grid<OrderItem> grid = new Grid<>(OrderItem.class);
         grid.setItems(cartService.getItems());
-        grid.setWidth("60%");
         grid.setColumns("product", "price", "quantity");
 
         grid.addColumn(new ComponentRenderer<>(item -> {
@@ -49,10 +57,24 @@ public class CartView extends AbstractView {
         TextField addressField = initTextFieldWithPlaceholder("Введите адрес доставки");
         TextField phoneField = initTextFieldWithPlaceholder("Введите номер телефона");
 
+        User user = SecurityUtils.getPrincipal().getUser();
         Button toOrderButton = new Button("Создать заказ", e -> {
+            BigDecimal totalSum = BigDecimal.ZERO;
+            for(OrderItem item: cartService.getItems()) {
+                totalSum = totalSum.add(item.getPrice());
+            }
+
+            if(BigDecimal.valueOf(user.getMoney()).compareTo(totalSum) < 0) {
+                Notification.show("Недостаточно средств");
+                return;
+            }
+
             cartService.setAddress(addressField.getValue());
             cartService.setPhone(phoneField.getValue());
             orderService.saveOrder();
+
+            user.setMoney(user.getMoney() - totalSum.intValue());
+            userService.updateUser(user);
 
             cartService.clear();
             UI.getCurrent().navigate("market");
@@ -61,9 +83,10 @@ public class CartView extends AbstractView {
         });
 
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        setAlignItems(Alignment.CENTER);
 
-        add(grid, addressField, phoneField, toOrderButton);
+        Label label = new Label("Ваши средства на кошельке: " + user.getMoney().toString());
+
+        add(label,grid, addressField, phoneField, toOrderButton);
     }
 
 }

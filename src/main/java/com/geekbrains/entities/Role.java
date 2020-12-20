@@ -1,15 +1,12 @@
 package com.geekbrains.entities;
 
 
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Table(name = "roles")
 public class Role {
     @Id

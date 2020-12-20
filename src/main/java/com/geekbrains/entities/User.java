@@ -25,6 +25,7 @@ public class User {
     private String lastName;
     private String email;
     private Integer age;
+    private Integer money;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",

@@ -27,6 +27,7 @@ create table users (
   email                 VARCHAR(50) UNIQUE,
   first_name            VARCHAR(50),
   last_name             VARCHAR(50),
+  money                 INT,
   PRIMARY KEY (id)
 );
 
@@ -52,13 +53,13 @@ insert into roles (name)
 values
 ('ROLE_CUSTOMER'), ('ROLE_MANAGER'), ('ROLE_ADMIN');
 
-insert into users (phone, password, first_name, last_name, email)
+insert into users (phone, password, first_name, last_name, email, money)
 values
-('admin','$2y$12$rxg3cYnpaZsNwAVuaiKZXeDb69dR.h9foNdfARmOp/9UBRLymKV22','admin','admin','admin@gmail.com');
+('admin','$2y$12$rxg3cYnpaZsNwAVuaiKZXeDb69dR.h9foNdfARmOp/9UBRLymKV22','admin','admin','admin@gmail.com', 123123);
 
-insert into users (phone, password, first_name, last_name, email)
+insert into users (phone, password, first_name, last_name, email, money)
 values
-('customer','$2y$12$xp41fm4W9DNDQngLGdPumOco1rXmdcza1Z.o/9Pf.j8yJjh17NfW6','customer','customer','customer@gmail.com');
+('customer','$2y$12$xp41fm4W9DNDQngLGdPumOco1rXmdcza1Z.o/9Pf.j8yJjh17NfW6','customer','customer','customer@gmail.com', 0);
 
 insert into users_roles (user_id, role_id)
 values
