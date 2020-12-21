@@ -63,7 +63,7 @@ public class MarketView extends AbstractView {
 
         productGrid = new Grid<>(Product.class);
         productGrid.setWidth("60%");
-        productGrid.setColumns("id", "title", "price");
+        productGrid.setColumns("id", "title", "price", "prices");
         productGrid.setSelectionMode(Grid.SelectionMode.MULTI);
         List<Product> productList = productRepository.findAll();
         productGrid.setItems(productList);
