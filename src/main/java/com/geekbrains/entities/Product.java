@@ -29,6 +29,12 @@ public class Product {
     inverseJoinColumns = @JoinColumn(name =  "category_id"))
     private List<Category> categories;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "products_price",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name =  "price_id"))
+    private List <Price_history> prices;
+
     @Override
     public String toString() {
         return this.title;

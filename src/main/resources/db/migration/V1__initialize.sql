@@ -7,6 +7,20 @@ insert into products
 ('Apples', 'Fresh apples', 80.0),
 ('Bread', 'Fresh bread', 30.0);
 
+drop table if exists price_history cascade;
+create table price_history (id bigserial, price numeric(8, 2), primary key(id));
+insert into price_history
+(price) values
+(300.0),
+(80.0),
+(50.0),
+(30.0);
+
+drop table if exists products_price cascade;
+create table products_price (product_id bigint not null, price_id bigint not null, primary key(product_id, price_id),
+                                  foreign key (product_id) references products(id), foreign key (price_id) references price_history(id));
+insert into products_price (product_id, price_id) values (1, 1), (1, 2), (3, 3), (3, 4);
+
 drop table if exists categories cascade;
 create table categories (id bigserial, title varchar(255), primary key(id));
 insert into categories
