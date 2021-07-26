@@ -13,7 +13,6 @@ import java.time.Instant;
 @Component
 public class AspectOrder {
 
-//    @Pointcut("execution(public void com.geekbrains.services.OrderService.saveOrder())")
     @Pointcut("execution(public * com.geekbrains.services.OrderService.*(..))")
     public void callAspectOrderPublic() {
     }

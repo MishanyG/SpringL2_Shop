@@ -18,10 +18,4 @@ public class Category {
 
     @Column(name = "title")
     private String title;
-
-    /*@ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "products_categories",
-    joinColumns = @JoinColumn(name = "category_id"),
-    inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;*/
 }

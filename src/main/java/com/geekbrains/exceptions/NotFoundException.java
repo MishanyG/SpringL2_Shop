@@ -1,6 +1,5 @@
 package com.geekbrains.exceptions;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter

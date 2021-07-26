@@ -1,7 +1,7 @@
 package com.geekbrains.connectors;
 
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.MultiPartEmail;
+//import org.apache.commons.mail.EmailException;
+//import org.apache.commons.mail.MultiPartEmail;
 import org.springframework.stereotype.Component;
 
 @Component

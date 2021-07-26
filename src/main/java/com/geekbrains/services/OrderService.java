@@ -1,20 +1,14 @@
 package com.geekbrains.services;
 
 import com.geekbrains.entities.Order;
-import com.geekbrains.entities.OrderItem;
 import com.geekbrains.entities.User;
 import com.geekbrains.repositories.OrderItemRepository;
 import com.geekbrains.repositories.OrderRepository;
-import com.geekbrains.security.CustomPrincipal;
 import com.geekbrains.security.SecurityUtils;
-import io.swagger.models.apideclaration.Items;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.geekbrains.entities.Order.Status.MANAGING;
 

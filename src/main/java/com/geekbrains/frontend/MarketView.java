@@ -2,7 +2,6 @@ package com.geekbrains.frontend;
 
 import com.geekbrains.entities.Product;
 import com.geekbrains.repositories.ProductRepository;
-import com.geekbrains.security.CustomPrincipal;
 import com.geekbrains.services.CartService;
 import com.geekbrains.specifications.ProductFilter;
 import com.vaadin.flow.component.Component;
@@ -20,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
