@@ -5,7 +5,6 @@ import com.geekbrains.exceptions.RoleNotFoundException;
 import com.geekbrains.repositories.RoleRepository;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RoleInfoNotFoundException;
 import java.util.Optional;
 
 @Service

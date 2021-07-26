@@ -7,6 +7,20 @@ insert into products
 ('Apples', 'Fresh apples', 80.0),
 ('Bread', 'Fresh bread', 30.0);
 
+drop table if exists price_history cascade;
+create table price_history (id bigserial, price numeric(8, 2), primary key(id));
+insert into price_history
+(price) values
+(300.0),
+(80.0),
+(50.0),
+(30.0);
+
+drop table if exists products_price cascade;
+create table products_price (product_id bigint not null, price_id bigint not null, primary key(product_id, price_id),
+                                  foreign key (product_id) references products(id), foreign key (price_id) references price_history(id));
+insert into products_price (product_id, price_id) values (1, 1), (1, 2), (3, 3), (3, 4);
+
 drop table if exists categories cascade;
 create table categories (id bigserial, title varchar(255), primary key(id));
 insert into categories
@@ -27,6 +41,7 @@ create table users (
   email                 VARCHAR(50) UNIQUE,
   first_name            VARCHAR(50),
   last_name             VARCHAR(50),
+  money                 INT,
   PRIMARY KEY (id)
 );
 
@@ -52,21 +67,29 @@ insert into roles (name)
 values
 ('ROLE_CUSTOMER'), ('ROLE_MANAGER'), ('ROLE_ADMIN');
 
-insert into users (phone, password, first_name, last_name, email)
+insert into users (phone, password, first_name, last_name, email, money)
 values
-('11111111','$2a$04$gPMdKjz72XGf1O2osAbKJek4dbMUikcvs/YlXncnApKAIGHV852zm','admin','admin','admin@gmail.com');
+('admin','$2y$12$rxg3cYnpaZsNwAVuaiKZXeDb69dR.h9foNdfARmOp/9UBRLymKV22','admin','admin','admin@gmail.com', 123123);
+
+insert into users (phone, password, first_name, last_name, email, money)
+values
+('customer','$2y$12$xp41fm4W9DNDQngLGdPumOco1rXmdcza1Z.o/9Pf.j8yJjh17NfW6','customer','customer','customer@gmail.com', 0);
 
 insert into users_roles (user_id, role_id)
 values
 (1, 1),
 (1, 2),
-(1, 3);
+(1, 3),
+(2, 1);
 
 drop table if exists orders cascade;
-create table orders (id bigserial, user_id bigint not null, price numeric(8, 2) not null, address varchar (255) not null, phone_number varchar(30) not null, primary key(id), constraint fk_user_id foreign key (user_id) references users (id));
+create table orders (id bigserial, user_id bigint not null, price numeric(8, 2) not null, status varchar(32), address varchar (255) not null, phone_number varchar(30) not null, primary key(id), constraint fk_user_id foreign key (user_id) references users (id));
+
+drop table if exists items cascade;
+create table items (id bigserial, product_id bigint not null, quantity int, price numeric(8, 2), primary key(id), constraint fk_prod_id foreign key (product_id) references products (id));
 
 drop table if exists orders_items cascade;
-create table orders_items (id bigserial, order_id bigint not null, product_id bigint not null, quantity int, price numeric(8, 2), primary key(id), constraint fk_prod_id foreign key (product_id) references products (id), constraint fk_order_id foreign key (order_id) references orders (id));
+create table order_items(id bigserial, order_id bigint not null, item_id bigint not null, primary key(id), constraint fk_order_items_id foreign key(order_id) references orders(id), constraint fk_item_id foreign key (item_id) references items(id));
 
 alter table users add column age integer;
 
