@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/offline.html",
                 "/icons/**",
                 "/images/**",
-                "/styles/**",
+                "/frontend/**",
                 "/h2-console/**");
     }
 
