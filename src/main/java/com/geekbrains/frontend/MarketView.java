@@ -8,6 +8,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
@@ -23,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.*;
 
 @Route("market")
+@CssImport("./themes/styles.css")
 public class MarketView extends AbstractView {
 
     private final CartService cartService;
@@ -61,7 +63,10 @@ public class MarketView extends AbstractView {
 
         productGrid = new Grid<>(Product.class);
         productGrid.setWidth("60%");
-        productGrid.setColumns("id", "title", "price", "prices");
+        productGrid.setColumns("id", "title", "price");
+        productGrid.getColumns().get(0).setHeader("ИД");
+        productGrid.getColumns().get(1).setHeader("Название");
+        productGrid.getColumns().get(2).setHeader("Цена");
         productGrid.setSelectionMode(Grid.SelectionMode.MULTI);
         List<Product> productList = productRepository.findAll();
         productGrid.setItems(productList);
@@ -70,8 +75,9 @@ public class MarketView extends AbstractView {
 
         setHorizontalComponentAlignment(Alignment.CENTER, productGrid);
         add(horizontalLayout);
-        add(initFilterComponent());
-        add(productGrid);
+        HorizontalLayout filterAndProductGridComponentsLayout = new HorizontalLayout(initFilterComponent(), productGrid);
+        filterAndProductGridComponentsLayout.setWidth("100%");
+        add(filterAndProductGridComponentsLayout);
 
         add(new Button("Добавить выбранные товары", e -> {
             Set<Product> productSet = productGrid.getSelectedItems();
@@ -86,19 +92,27 @@ public class MarketView extends AbstractView {
     }
 
     private Component initFilterComponent() {
-        HorizontalLayout priceLayout = new HorizontalLayout();
+        VerticalLayout priceLayout = new VerticalLayout();
         titleTextField = initTextFieldWithPlaceholder("Название");
+        titleTextField.setWidth("100%");
         minPriceTextField = initTextFieldWithPlaceholder("Минимальная цена");
+        minPriceTextField.setWidth("100%");
         maxPriceTextField = initTextFieldWithPlaceholder("Максимальная цена");
+        maxPriceTextField.setWidth("100%");
         priceLayout.add(titleTextField, minPriceTextField, maxPriceTextField);
         priceLayout.setAlignItems(Alignment.CENTER);
+        priceLayout.setWidth("100%");
 
         VerticalLayout categoriesLayout = new VerticalLayout();
         Label categoriesLabel = new Label("Категории");
-        Checkbox foodCheckbox = new Checkbox("Food");
-        Checkbox devicesCheckbox = new Checkbox("Devices");
-        categoriesLayout.add(categoriesLabel, foodCheckbox, devicesCheckbox);
-        categoriesLayout.setAlignItems(Alignment.CENTER);
+        categoriesLabel.setWidth("100%");
+        categoriesLabel.addClassName("center");
+        Checkbox bakingCheckbox = new Checkbox("Хлебобулочные изделия");
+        Checkbox devicesCheckbox = new Checkbox("Устройства");
+        Checkbox milkCheckbox = new Checkbox("Молочная продукция");
+        Checkbox fruitsCheckbox = new Checkbox("Фрукты");
+        categoriesLayout.add(categoriesLabel, bakingCheckbox, devicesCheckbox, milkCheckbox, fruitsCheckbox);
+        categoriesLayout.setAlignItems(Alignment.START);
 
         HorizontalLayout buttonLayout = new HorizontalLayout();
         Button makeFiltersButton = new Button("Применить", event -> {
@@ -116,12 +130,20 @@ public class MarketView extends AbstractView {
                 filterMap.put("max_price", maxPriceTextField.getValue());
             }
 
-            if (foodCheckbox.getValue()) {
-                categories.add("Food");
+            if (bakingCheckbox.getValue()) {
+                categories.add("Baking");
             }
 
             if (devicesCheckbox.getValue()) {
                 categories.add("Devices");
+            }
+
+            if (milkCheckbox.getValue()) {
+                categories.add("Milk");
+            }
+
+            if (fruitsCheckbox.getValue()) {
+                categories.add("Fruits");
             }
 
             productGrid.setItems(
@@ -132,9 +154,12 @@ public class MarketView extends AbstractView {
 
         Button cancelFiltersButton = new Button("Сброс фильтра", event -> productGrid.setItems(productRepository.findAll()));
         buttonLayout.add(makeFiltersButton, cancelFiltersButton);
+        buttonLayout.setMargin(false);
 
         VerticalLayout filterComponentsLayout = new VerticalLayout(priceLayout, categoriesLayout, buttonLayout);
-        filterComponentsLayout.setAlignItems(Alignment.CENTER);
+        filterComponentsLayout.setAlignItems(Alignment.START);
+        filterComponentsLayout.setWidth(null);
+        filterComponentsLayout.addClassName("outline");
         return filterComponentsLayout;
     }
 
